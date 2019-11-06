@@ -3,6 +3,7 @@ const socket = io();
 const $messageForm = document.querySelector("#message-form");
 const $messageFormInput = $messageForm.querySelector("input");
 const $messageFormButton = $messageForm.querySelector("button");
+const $shareLocationButton = document.querySelector("#share-location");
 const $messages = document.querySelector("#messages");
 
 /* Templates */
@@ -75,7 +76,9 @@ $messageForm.addEventListener("submit", e => {
   // const message = document.querySelector("input").value;
   const message = e.target.elements.message.value;
   socket.emit("sendMessage", message, error => {
-    //$messageFormButton.setAttribute("disabled", "disabled");
+    $messageFormButton.removeAttribute("disabled");
+    $messageFormInput.value = "";
+    $messageFormInput.focus();
 
     if (error) {
       return console.log("Message", error);
@@ -85,10 +88,12 @@ $messageForm.addEventListener("submit", e => {
   });
 });
 
-document.querySelector("#send-location").addEventListener("click", () => {
+document.querySelector("#share-location").addEventListener("click", () => {
   if (!navigator.geolocation) {
+    $shareLocationButton.setAttribute("disabled", "disabled");
     return alert("Geolocation is not supported by your browser");
   }
+  $shareLocationButton.setAttribute("disabled", "disabled");
 
   navigator.geolocation.getCurrentPosition(position => {
     socket.emit(
@@ -101,6 +106,7 @@ document.querySelector("#send-location").addEventListener("click", () => {
         console.log("Location Shared!!");
       }
     );
+    $shareLocationButton.removeAttribute("disabled");
   });
 });
 
