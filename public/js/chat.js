@@ -72,8 +72,6 @@ socket.on("roomData", ({ room, users }) => {
 $messageForm.addEventListener("submit", e => {
   e.preventDefault();
 
-  // $messageFormButton.setAttribute("disabled", "disabled");
-  // const message = document.querySelector("input").value;
   const message = e.target.elements.message.value;
   socket.emit("sendMessage", message, error => {
     $messageFormButton.removeAttribute("disabled");
@@ -83,8 +81,6 @@ $messageForm.addEventListener("submit", e => {
     if (error) {
       return console.log("Message", error);
     }
-    console.log("Message delivered");
-    console.log("The message was delivered!!", message);
   });
 });
 
